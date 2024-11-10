@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<!-- DataSource -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url" value="jdbc:mysql://localhost:3306/graduation_mystock?useUnicode=true&amp;characterEncoding=UTF-8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+
+    <!-- SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingDirectoryLocations">
+            <list>
+	            <value>classpath:com/cxstock/pojo/xml/</value>
+            </list>
+        </property>
+        <!-- 设置Hibernate的相关属性 -->
+        <property name="hibernateProperties">
+            <props>
+                <!-- 设置Hibernate的数据库方言 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!-- 设置Hibernate是否在控制台输出SQL语句，开发调试阶段通常设为true -->
+                <prop key="hibernate.show_sql">false</prop>
+				<!-- 设置Hibernate一个提交批次中的最大SQL语句数 -->
+                <prop key="hibernate.jdbc.batch_size">50</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--定义Hibernate的事务管理器HibernateTransactionManager -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <!-- 依赖注入上面定义的sessionFactory -->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+	
+    <!--定义Spring的事务拦截器TransactionInterceptor -->
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	    <!--  依赖注入上面定义的事务管理器transactionManager -->
+        <property name="transactionManager" ref="transactionManager"/>
+      	<!-- 定义需要进行事务拦截的方法及所采用的事务控制类型 -->    	
+    	<property name="transactionAttributes">		    
+		    <props>
+		    	<prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+		    </props>
+	    </property>
+	</bean>
+	
+    <!-- 定义BeanNameAutoProxyCreatorf进行Spring的事务处理-->
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	    <!--  针对指定的bean自动生成业务代理 -->
+	    <property name="beanNames"> 
+            <list>
+                <value>*Biz</value>
+            </list>
+	    </property>
+	    <!--  这个属性为true时，表示被代理的是目标类本身而不是目标类的接口 -->
+	    <property name="proxyTargetClass">
+	    	<value>false</value>
+	    </property>
+        <!--  依赖注入上面定义的事务拦截器transactionInterceptor -->
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value> 
+            </list>
+        </property>
+    </bean>
+        
+</beans>

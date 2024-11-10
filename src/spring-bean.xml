@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <!--==========================================  dao  ==========================================-->
+    <bean id="baseDao" class="com.cxstock.dao.impl.BaseDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="dqkcDao" class="com.cxstock.dao.impl.DqkcDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!--==========================================  biz  ==========================================-->
+	<!-- 用户管理 -->
+	<bean id="userBiz" class="com.cxstock.biz.power.imp.UserBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 角色管理 -->
+	<bean id="roleBiz" class="com.cxstock.biz.power.imp.RoleBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 供应商管理 -->
+	<bean id="gysBiz" class="com.cxstock.biz.ziliao.imp.GysBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 客户管理 -->
+	<bean id="khBiz" class="com.cxstock.biz.ziliao.imp.KhBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 商品管理 -->
+	<bean id="spxxBiz" class="com.cxstock.biz.ziliao.imp.SpxxBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 库存管理 -->
+	<bean id="kcBiz" class="com.cxstock.biz.ziliao.imp.KcBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 商品类别管理 -->
+	<bean id="splbBiz" class="com.cxstock.biz.ziliao.imp.SplbBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 单位管理 -->
+	<bean id="spdwBiz" class="com.cxstock.biz.ziliao.imp.SpdwBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	
+	<!-- 进货管理 -->
+	<bean id="jhBiz" class="com.cxstock.biz.jinhuo.imp.JhBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 销售管理 -->
+	<bean id="xsBiz" class="com.cxstock.biz.chushou.imp.XsBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 库存管理 -->
+	<bean id="bsyBiz" class="com.cxstock.biz.kucun.imp.BsyBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	<!-- 库存查询 -->
+	<bean id="searchBiz" class="com.cxstock.biz.kucun.imp.SearchBizImpl">
+		<property name="dqkcDao" ref="dqkcDao"/>
+	</bean>
+	<!-- 统计报表 -->
+	<bean id="tongjiBiz" class="com.cxstock.biz.tongji.imp.TongjiBizImpl">
+		<property name="baseDao" ref="baseDao"/>
+	</bean>
+	
+	<!--==========================================  action  ==========================================-->
+	<!-- 用户管理 -->
+	<bean id="userAction" class="com.cxstock.action.power.UserAction" scope="prototype">
+		<property name="userBiz" ref="userBiz"/>
+	</bean>
+	<!-- 角色管理 -->
+	<bean id="roleAction" class="com.cxstock.action.power.RoleAction" scope="prototype">
+		<property name="roleBiz" ref="roleBiz"/>
+	</bean>
+	<!-- 供应商管理 -->
+	<bean id="gysAction" class="com.cxstock.action.ziliao.GysAction" scope="prototype">
+		<property name="gysBiz" ref="gysBiz"/>
+	</bean>
+	<!-- 客户管理 -->
+	<bean id="khAction" class="com.cxstock.action.ziliao.KhAction" scope="prototype">
+		<property name="khBiz" ref="khBiz"/>
+	</bean>
+	<!-- 商品管理 -->
+	<bean id="spxxAction" class="com.cxstock.action.ziliao.SpxxAction" scope="prototype">
+		<property name="spxxBiz" ref="spxxBiz"/>
+	</bean>
+	<!-- 库存管理 -->
+	<bean id="kcAction" class="com.cxstock.action.ziliao.KcAction" scope="prototype">
+		<property name="kcBiz" ref="kcBiz"/>
+	</bean>
+	<!-- 商品类别管理 -->
+	<bean id="splbAction" class="com.cxstock.action.ziliao.SplbAction" scope="prototype">
+		<property name="splbBiz" ref="splbBiz"/>
+	</bean>
+	<!-- 单位管理 -->
+	<bean id="spdwAction" class="com.cxstock.action.ziliao.SpdwAction" scope="prototype">
+		<property name="spdwBiz" ref="spdwBiz"/>
+	</bean>
+	
+	<!-- 进货管理 -->
+	<bean id="jhAction" class="com.cxstock.action.jinhuo.JhAction" scope="prototype">
+		<property name="jhBiz" ref="jhBiz"/>
+	</bean>
+	<!-- 销售管理 -->
+	<bean id="xsAction" class="com.cxstock.action.chushou.XsAction" scope="prototype">
+		<property name="xsBiz" ref="xsBiz"/>
+	</bean>
+	<!-- 库存管理 -->
+	<bean id="bsyAction" class="com.cxstock.action.kucun.BsyAction" scope="prototype">
+		<property name="bsyBiz" ref="bsyBiz"/>
+	</bean>
+	<!-- 库存查询 -->
+	<bean id="searchAction" class="com.cxstock.action.kucun.SearchAction" scope="prototype">
+		<property name="searchBiz" ref="searchBiz"/>
+	</bean>
+	<!-- 统计报表 -->
+	<bean id="tongjiAction" class="com.cxstock.action.tongji.TongjiAction" scope="prototype">
+		<property name="tongjiBiz" ref="tongjiBiz"/>
+	</bean>
+	<!-- 数据库备份 -->
+	<bean id="dataCopyAction" class="com.cxstock.action.power.DataCopyAction" scope="prototype">
+	</bean>
+</beans>

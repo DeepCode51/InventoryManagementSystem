@@ -1,0 +1,28 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>温馨提示</title>
+</head>
+<body>
+<br/><br/><br/>
+<table width="560" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><img height="117" src="../../img/sorry.gif" width="174"></td>
+    <td width="360"><p align="left" class="titleText">连接已超时!<br>
+    请重新登录!!! <span id="num">6</span></p>
+    </td>
+  </tr>
+</table>
+<script language="javascript">
+	function flushTime(){
+		var t = document.all.num.innerText;
+		if (t==1){
+			window.top.location="meta_index.jsp";			
+		}else{
+			document.all.num.innerText = t-1;
+		}		
+	}
+	setInterval("flushTime();",1000);
+</script>
+</body>
+</html>
